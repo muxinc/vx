@@ -18,6 +18,7 @@ export default function HeatmapRect({
   bin = d => d.bin,
   bins = d => d.bins,
   count = d => d.count,
+  indexedRows = false,
   ...restProps
 }) {
   const width = binWidth - gap;
@@ -28,6 +29,7 @@ export default function HeatmapRect({
         return (
           <Group key={`heatmap-${i}`} className="vx-heatmap-column" left={xScale(bin(d))}>
             {bins(d).map((b, j) => {
+              const y = indexedRows ? j : bin(b);
               return (
                 <rect
                   key={`heatmap-tile-rect-${j}`}
@@ -36,7 +38,7 @@ export default function HeatmapRect({
                   width={width}
                   height={height}
                   x={x}
-                  y={yScale(bin(b) + step) + gap}
+                  y={yScale(y + step) + gap}
                   fillOpacity={opacityScale(count(b))}
                   {...additionalProps(restProps, {
                     bin: b,
